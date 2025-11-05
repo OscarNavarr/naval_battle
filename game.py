@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from grid import print_grid, cellNameToIndex
-
+from score import saveTurnInFile, calculScore
 # Icons 
 hit_icon = "💥"
 miss_icon = "💦"
@@ -29,10 +29,7 @@ def send_missile_at(grid, row_index, column_index):
 
 
 def ask_send_missile(grid):
-    """
-    Demande à l'utilisateur une cellule (ex: A2) et tire un missile.
-    Gère les erreurs avec des exceptions ValueError.
-    """
+    """Asks the user for coordinates (like A2) and fires"""
     print("\n--- Your turn ---")
     
     while True:
@@ -43,7 +40,9 @@ def ask_send_missile(grid):
         except ValueError as e:
             print(f"❌ Error: {e}. Try again.")
     
-    send_missile_at(grid, row_index, column_index)
+    result = send_missile_at(grid, row_index, column_index)
+    if result is not None:
+        saveTurnInFile(cell_name, result, grid)
 
 
 def is_game_over(grid):

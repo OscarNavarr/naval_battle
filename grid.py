@@ -39,9 +39,12 @@ def place_ships_manually(grid):
     return grid
 
 
-def print_grid(grid):
-    """Displays the grid in the console (ships are hidden)"""
-    print("  A  B  C  D  E  F  G  H")
+def print_grid(grid, reveal=False, file=None):
+    """
+    Displays the grid in the console or writes it to a file.
+    If reveal=True, shows the ships.
+    """
+    output = "  A  B  C  D  E  F  G  H\n"
     for row_index in range(8):
         row_display = str(row_index + 1) + " "
         for col_index in range(8):
@@ -49,15 +52,19 @@ def print_grid(grid):
             if cell == ' ':
                 row_display += sea_icon + " "
             elif cell == 'b':
-                # Hide ships from player
-                row_display += sea_icon + " "
+                row_display += (ship_icon + " ") if reveal else (sea_icon + " ")
             elif cell == 'h':
                 row_display += hit_icon + " "
             elif cell == 'm':
                 row_display += miss_icon + " "
-            else:
-                row_display += sea_icon + " "
-        print(row_display)
+        output += row_display + "\n"
+
+    # Print or save to file
+    if file:
+        file.write(output)
+    else:
+        print(output)
+ 
 
 
 def cellNameToIndex(cellName):
